@@ -17,29 +17,43 @@ export default function Header() {
         setIsScrolled(false);
       }
 
-      // 2. Altera o link ativo dinamicamente com base na seção visível
+      // 2. Altera o link ativo com base na proximidade do topo da tela (Visão real do usuário)
+      const homeSection = document.getElementById('home');
       const sobreSection = document.getElementById('sobre');
-      if (sobreSection) {
-        const rect = sobreSection.getBoundingClientRect();
-        // Se o topo da seção Sobre estiver próximo ou acima do topo da janela
-        if (rect.top <= 100) {
-          setActiveSection('sobre');
-        } else {
-          setActiveSection('home');
-        }
+      const servicosSection = document.getElementById('servicos');
+
+      // Definição de um offset confortável (ex: 150px antes do elemento tocar o topo)
+      const offset = 150;
+
+      if (servicosSection && servicosSection.getBoundingClientRect().top <= offset) {
+        setActiveSection('servicos');
+      } else if (sobreSection && sobreSection.getBoundingClientRect().top <= offset) {
+        setActiveSection('sobre');
+      } else {
+        setActiveSection('home');
       }
     };
 
     window.addEventListener('scroll', handleScroll);
+    // Executa uma vez no início para validar a seção inicial caso a página recarregue no meio
+    handleScroll(); 
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Função para realizar scroll suave ao clicar nos links (opcional, mas altamente recomendado)
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Calcula a posição final descontando a altura do header fixo (80px)
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -75,6 +89,7 @@ export default function Header() {
           >
             Home
           </Link>
+          
           <Link 
             href="#" 
             onClick={(e) => handleScrollTo(e, 'sobre')}
@@ -83,9 +98,16 @@ export default function Header() {
           >
             Sobre
           </Link>
-          <Link href="#" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
+
+          <Link 
+            href="#" 
+            onClick={(e) => handleScrollTo(e, 'servicos')}
+            className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
+              ${activeSection === 'servicos' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
+          >
             Serviços
           </Link>
+
           <Link href="#" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
             Projetos
           </Link>
