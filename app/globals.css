@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+  /* Definição das novas cores do projeto */
+  --bg-dark: #121417;        /* Cinza grafite muito escuro (fundo principal) */
+  --bg-card: #1a1d24;        /* Cinza ligeiramente mais claro para blocos/cards */
+  --accent-red: #9a1c24;     /* Vermelho-escuro sofisticado (Bordô/Carmim) */
+  --text-muted: #9ca3af;     /* Cinza médio para textos secundários */
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
