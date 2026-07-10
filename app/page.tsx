@@ -1,32 +1,73 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 
 export default function Home() {
   const [grupoAtivo, setGrupoAtivo] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // 1. Detectar o tamanho da tela de forma segura no Client-side
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // 2. Efeito para alternar os cards de forma automatizada respeitando o limite do Mobile e Desktop
+  // Efeito para alternar os cards a cada 5 segundos de forma automatizada
   useEffect(() => {
     const interval = setInterval(() => {
-      setGrupoAtivo((prev) => {
-        const limiteMaximo = isMobile ? 2 : 1;
-        return prev >= limiteMaximo ? 0 : prev + 1;
-      });
+      setGrupoAtivo((prev) => (prev === 0 ? 1 : 0));
     }, 5000);
     return () => clearInterval(interval);
-  }, [isMobile]);
+  }, []);
+
+  // ===== LÓGICA DA SEÇÃO INSIGHTS =====
+  const categoriasInsights = ["Todos", "Arquitetura", "Construção", "Interiores", "Gestão"];
+
+  const listaArtigos = [
+    {
+      id: 1,
+      destaque: true,
+      categoria: "Arquitetura",
+      titulo: "Tendências de Arquitetura Minimalista para Projetos de Alto Padrão",
+      resumo: "Descubra como a integração de elementos naturais, iluminação cênica e o conceito 'less is more' estão transformando as fachadas e layouts das residências contemporâneas mais luxuosas.",
+      data: "10 Jul, 2026",
+      tempoLeitura: "5 min de leitura",
+      imagem: "/insight-destaque.jpg",
+    },
+    {
+      id: 2,
+      destaque: false,
+      categoria: "Gestão",
+      titulo: "Como Evitar Desperdícios e Atrasos na Gestão de Obras",
+      resumo: "Um guia prático sobre planejamento estratégico, cronogramas inteligentes e escolhas de fornecedores para manter o orçamento sob controle absoluto.",
+      data: "08 Jul, 2026",
+      tempoLeitura: "4 min de leitura",
+      imagem: "/insight-2.jpg",
+    },
+    {
+      id: 3,
+      categoria: "Interiores",
+      titulo: "Marcenaria Planejada Inteligente: Sofisticação e Otimização",
+      resumo: "A fusão perfeita entre estética atemporal e o aproveitamento milimétrico de espaços internos na criação de mobiliários de luxo.",
+      data: "05 Jul, 2026",
+      tempoLeitura: "6 min de leitura",
+      imagem: "/insight-3.jpg",
+    },
+    {
+      id: 4,
+      categoria: "Construção",
+      titulo: "Sustentabilidade e Tecnologia na Construção Civil Moderna",
+      resumo: "Novos materiais, isolamento termoacústico de alta performance e sistemas integrados que valorizam o patrimônio a longo prazo.",
+      data: "01 Jul, 2026",
+      tempoLeitura: "4 min de leitura",
+      imagem: "/insight-4.jpg",
+    }
+  ];
+
+  const [categoriaAtiva, setCategoriaAtiva] = useState("Todos");
+
+  const artigosFiltrados = useMemo(() => {
+    return listaArtigos.filter(artigo =>
+      categoriaAtiva === "Todos" ? true : artigo.categoria === categoriaAtiva
+    );
+  }, [categoriaAtiva]);
+
+  const artigoPrincipal = artigosFiltrados.find(a => a.destaque) || artigosFiltrados[0];
+  const demaisArtigos = artigosFiltrados.filter(a => a.id !== artigoPrincipal?.id);
 
   return (
     <div className="min-h-screen bg-[#121417] flex flex-col selection:bg-[#9a1c24] selection:text-white">
@@ -557,6 +598,142 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* ==========================================
+          QUINTA DOBRA: INSIGHTS & TENDÊNCIAS 
+          ========================================== */}
+      <section id="insights" className="relative w-full bg-[#121417] py-16 md:py-24 px-4 sm:px-6 md:px-8 border-t border-white/5 z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col gap-10 md:gap-14">
+          
+          {/* CABEÇALHO DA SEÇÃO */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 max-w-5xl mx-auto w-full">
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4">
+                Nosso Conhecimento
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-light tracking-wide leading-tight text-white font-serif">
+                Insights & <br />
+                <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
+                  Tendências
+                </span>
+              </h2>
+              <p className="mt-3 text-gray-400 text-xs sm:text-sm tracking-wide leading-relaxed max-w-lg">
+                Artigos, análises exclusivas e novidades sobre o universo da arquitetura, engenharia e design de interiores de alto padrão.
+              </p>
+            </div>
+          </div>
+
+          {/* BARRA DE FILTROS POR CATEGORIA */}
+          <div className="max-w-5xl mx-auto w-full overflow-x-auto no-scrollbar scroll-smooth flex items-center gap-2 pb-2 border-b border-white/5">
+            {categoriasInsights.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategoriaAtiva(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide whitespace-nowrap transition-all duration-300 border ${
+                  categoriaAtiva === cat
+                    ? "bg-[#9a1c24] border-[#9a1c24] text-white shadow-md shadow-[#9a1c24]/10"
+                    : "bg-[#1a1d24]/40 border-white/10 text-gray-400 hover:text-white hover:border-white/30"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* CONTEÚDO PRINCIPAL */}
+          <div className="max-w-5xl mx-auto w-full flex flex-col gap-8 md:gap-12">
+            
+            {/* CARD EM DESTAQUE */}
+            {artigoPrincipal && (
+              <div className="group relative w-full bg-[#1a1d24]/30 border border-white/10 rounded-2xl overflow-hidden flex flex-col md:flex-row transition-all duration-500 hover:border-[#9a1c24]/50 cursor-pointer">
+                <div className="relative w-full md:w-1/2 h-56 sm:h-72 md:h-auto min-h-[260px] overflow-hidden bg-gray-900 shrink-0">
+                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#121417]/80 via-transparent to-transparent z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-black opacity-40 group-hover:scale-105 transition-transform duration-700 ease-out" />
+                  <div className="absolute top-4 left-4 z-20 bg-[#9a1c24] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded">
+                    Destaque • {artigoPrincipal.categoria}
+                  </div>
+                </div>
+
+                <div className="p-5 sm:p-8 flex flex-col justify-between flex-grow gap-4">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3 text-[11px] text-gray-500 tracking-wider">
+                      <span>{artigoPrincipal.data}</span>
+                      <span className="w-1 h-1 rounded-full bg-white/20" />
+                      <span>{artigoPrincipal.tempoLeitura}</span>
+                    </div>
+                    <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-white font-light leading-tight group-hover:text-[#c5a880] transition-colors duration-300">
+                      {artigoPrincipal.titulo}
+                    </h3>
+                    <p className="text-gray-400 text-xs sm:text-sm tracking-wide leading-relaxed line-clamp-3 md:line-clamp-4">
+                      {artigoPrincipal.resumo}
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-xs font-semibold text-white group-hover:text-[#9a1c24] transition-colors duration-300 mt-2">
+                    Ler artigo completo <span className="transform group-hover:translate-x-1 transition-transform">&rarr;</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* DEMAIS ARTIGOS (GRID) */}
+            {demaisArtigos.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                {demaisArtigos.map((artigo) => (
+                  <div 
+                    key={artigo.id}
+                    className="group bg-[#1a1d24]/20 border border-white/5 rounded-xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-[#1a1d24]/40 cursor-pointer"
+                  >
+                    <div className="relative w-full h-44 sm:h-48 overflow-hidden bg-gray-900">
+                      <div className="absolute top-3 left-3 z-20 bg-white/10 backdrop-blur-md text-white text-[9px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded border border-white/10">
+                        {artigo.categoria}
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-[#9a1c24]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+
+                    <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between gap-4">
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2 text-[10px] text-gray-500 tracking-wider">
+                          <span>{artigo.data}</span>
+                          <span className="w-1 h-1 rounded-full bg-white/10" />
+                          <span>{artigo.tempoLeitura}</span>
+                        </div>
+                        <h4 className="font-serif text-base sm:text-lg text-white font-light leading-snug group-hover:text-[#c5a880] transition-colors duration-300 line-clamp-2">
+                          {artigo.titulo}
+                        </h4>
+                        <p className="text-gray-400 text-xs tracking-wide leading-relaxed line-clamp-2 sm:line-clamp-3">
+                          {artigo.resumo}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-xs text-gray-300 font-medium group-hover:text-white transition-colors duration-300 pt-1">
+                        Continuar lendo <span>&rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 border border-dashed border-white/10 rounded-xl bg-[#1a1d24]/10">
+                <p className="text-sm text-gray-500 tracking-wide">Nenhum insight publicado nesta categoria ainda.</p>
+              </div>
+            )}
+
+          </div>
+        </div>
+
+        <style jsx global>{`
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
+      </section>
+
     </div>
   );
 }

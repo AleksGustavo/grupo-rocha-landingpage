@@ -10,33 +10,31 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // 1. Remove a transparência do fundo ao rolar mais de 20px
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+      // Altera o fundo ao rolar
+      setIsScrolled(window.scrollY > 20);
+
+      // Lista de seções na ordem do layout (da primeira à última)
+      const sectionIds = ['home', 'sobre', 'servicos', 'projetos', 'insights'];
+      const offset = 150; // distância do topo para considerar a seção ativa
+
+      // Encontra a primeira seção cujo topo está dentro do offset
+      let found = 'home';
+      for (const id of sectionIds) {
+        const element = document.getElementById(id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= offset) {
+            found = id;
+          } else {
+            break; // como estão em ordem, a primeira que ultrapassar o offset é a atual
+          }
+        }
       }
-
-      // 2. Altera o link ativo com base na proximidade do topo da tela (Visão real do usuário)
-      const homeSection = document.getElementById('home');
-      const sobreSection = document.getElementById('sobre');
-      const servicosSection = document.getElementById('servicos');
-
-      // Definição de um offset confortável (ex: 150px antes do elemento tocar o topo)
-      const offset = 150;
-
-      if (servicosSection && servicosSection.getBoundingClientRect().top <= offset) {
-        setActiveSection('servicos');
-      } else if (sobreSection && sobreSection.getBoundingClientRect().top <= offset) {
-        setActiveSection('sobre');
-      } else {
-        setActiveSection('home');
-      }
+      setActiveSection(found);
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Executa uma vez no início para validar a seção inicial caso a página recarregue no meio
-    handleScroll(); 
+    handleScroll(); // executa uma vez para definir o estado inicial
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -45,8 +43,7 @@ export default function Header() {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      // Calcula a posição final descontando a altura do header fixo (80px)
-      const headerOffset = 80;
+      const headerOffset = 80; // altura do header fixo
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - headerOffset;
 
@@ -82,7 +79,7 @@ export default function Header() {
         {/* MENU DE NAVEGAÇÃO */}
         <nav className="hidden md:flex items-center gap-8">
           <Link 
-            href="#" 
+            href="#home" 
             onClick={(e) => handleScrollTo(e, 'home')}
             className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
               ${activeSection === 'home' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
@@ -91,7 +88,7 @@ export default function Header() {
           </Link>
           
           <Link 
-            href="#" 
+            href="#sobre" 
             onClick={(e) => handleScrollTo(e, 'sobre')}
             className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
               ${activeSection === 'sobre' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
@@ -100,7 +97,7 @@ export default function Header() {
           </Link>
 
           <Link 
-            href="#" 
+            href="#servicos" 
             onClick={(e) => handleScrollTo(e, 'servicos')}
             className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
               ${activeSection === 'servicos' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
@@ -108,13 +105,25 @@ export default function Header() {
             Serviços
           </Link>
 
-          <Link href="#" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
+          <Link 
+            href="#projetos" 
+            onClick={(e) => handleScrollTo(e, 'projetos')}
+            className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
+              ${activeSection === 'projetos' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
+          >
             Projetos
           </Link>
-          <Link href="#" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
+
+          <Link 
+            href="#insights" 
+            onClick={(e) => handleScrollTo(e, 'insights')}
+            className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
+              ${activeSection === 'insights' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
+          >
             Insights
           </Link>
-          <Link href="#" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
+
+          <Link href="#contato" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
             Contato
           </Link>
         </nav>
@@ -122,7 +131,7 @@ export default function Header() {
         {/* BOTÃO DA DIREITA */}
         <div className="hidden md:block">
           <Link 
-            href="#" 
+            href="#contato" 
             className="text-xs font-medium tracking-widest uppercase border border-[#9a1c24]/40 text-white px-6 py-2.5 rounded-sm hover:bg-[#9a1c24] hover:border-[#9a1c24] transition-all duration-300"
           >
             Fale Conosco
