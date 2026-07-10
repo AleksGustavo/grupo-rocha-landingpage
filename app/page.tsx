@@ -1,10 +1,23 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function Home() {
+  const [grupoAtivo, setGrupoAtivo] = useState(0);
+
+  // Efeito para alternar os cards a cada 5 segundos de forma automatizada
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGrupoAtivo((prev) => (prev === 0 ? 1 : 0));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#121417] flex flex-col selection:bg-[#9a1c24] selection:text-white">
       
-{/* ==========================================
+      {/* ==========================================
           PRIMEIRA DOBRA: HERO SECTION (FUNDO ESCURO)
           ========================================== */}
       <div id="home" className="relative h-[90vh] min-h-[580px] w-full flex flex-col justify-between shrink-0 z-30">
@@ -23,7 +36,6 @@ export default function Home() {
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* ADICIONADO A CLASSE -translate-y-4 PARA SUBIR OS TEXTOS EM ~16px */}
             <div className="flex flex-col justify-center items-start bg-[#121417]/60 md:bg-transparent p-6 md:p-0 rounded-md md:rounded-none backdrop-blur-sm md:backdrop-blur-none transform -translate-y-4">
               <span className="text-[12px] font-semibold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4">
                 Arquitetura que Inspira
@@ -49,8 +61,7 @@ export default function Home() {
         </section>
 
         {/* BARRA DE ESTATÍSTICAS */}
-{/* BARRA DE ESTATÍSTICAS AJUSTADA PROPORÇÃO 70/30 */}
-<div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[30%] z-40 w-full max-w-5xl px-4 sm:px-6">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[30%] z-40 w-full max-w-5xl px-4 sm:px-6">
           <div className="bg-[#1a1d24] border border-white/10 rounded-sm p-5 md:p-7 shadow-2xl grid grid-cols-2 md:grid-cols-4 gap-4 text-center divide-y md:divide-y-0 md:divide-x divide-white/5">
             <div className="flex flex-col justify-center py-2 md:py-0">
               <span className="text-2xl md:text-3xl font-light tracking-tight text-white">15+</span>
@@ -79,7 +90,6 @@ export default function Home() {
       <section id="sobre" className="relative w-full bg-[#f9f6f0] pt-28 pb-24 md:pt-36 md:pb-32 px-6 text-[#121417] z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* COLUNA ESQUERDA: TEXTO INSTITUCIONAL & BOTÃO */}
           <div className="lg:col-span-4 flex flex-col items-start justify-center h-full">
             <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4">
               Destaques
@@ -101,10 +111,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* COLUNA DIREITA: GRID SIMÉTRICO DE 4 IMAGENS */}
           <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-5 items-stretch min-h-[500px]">
-            
-            {/* CARD 1 */}
             <div className="sm:col-span-1 relative h-full min-h-[400px] sm:min-h-0 rounded-2xl overflow-hidden shadow-xl group bg-neutral-800">
               <Image
                 src="/hero-bg.png" 
@@ -124,13 +131,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* COLUNA CENTRAL */}
             <div className="sm:col-span-1 flex flex-col gap-4 h-full">
-              
-              {/* CARD 2 */}
               <div className="relative flex-1 min-h-[190px] rounded-2xl overflow-hidden shadow-xl group bg-neutral-800">
                 <Image
-                  src="/predio-foto.png" 
+                  src="/hero-bg.png" 
                   alt="Aurora Office Tower"
                   fill
                   className="object-cover transition-all duration-700 ease-in-out transform group-hover:scale-105 brightness-90 group-hover:brightness-100"
@@ -147,10 +151,9 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* CARD 3 */}
               <div className="relative flex-1 min-h-[190px] rounded-2xl overflow-hidden shadow-xl group bg-neutral-800">
                 <Image
-                  src="/predio-foto.png" 
+                  src="/hero-bg.png" 
                   alt="Edgewood Villa"
                   fill
                   className="object-cover transition-all duration-700 ease-in-out transform group-hover:scale-105 brightness-90 group-hover:brightness-100"
@@ -166,10 +169,8 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
             </div>
 
-            {/* CARD 4 */}
             <div className="sm:col-span-1 relative h-full min-h-[400px] sm:min-h-0 rounded-2xl overflow-hidden shadow-xl group bg-neutral-800">
               <Image
                 src="/pirassununga-foto.png" 
@@ -188,20 +189,19 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
           </div>
 
         </div>
       </section>
 
       {/* ==========================================
-          TERCEIRA DOBRA: SERVIÇOS (FUNDO ESCURO)
+          TERCEIRA DOBRA: SERVIÇOS (SLIDER DINÂMICO 3x3) - TAMANHO REDUZIDO (py-16 md:py-20)
           ========================================== */}
-      <section id="servicos" className="relative w-full bg-[#121417] py-24 md:py-32 px-6 border-t border-white/5 z-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section id="servicos" className="relative w-full bg-[#121417] py-16 md:py-20 px-6 border-t border-white/5 z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col gap-10">
           
-          {/* COLUNA ESQUERDA: TÍTULO, DESCRIÇÃO E BOTÃO */}
-          <div className="lg:col-span-4 flex flex-col items-start justify-center">
+          {/* CABEÇALHO DA SEÇÃO */}
+          <div className="flex flex-col items-start">
             <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4">
               Nossos Serviços
             </span>
@@ -211,86 +211,288 @@ export default function Home() {
                 Ponta a Ponta
               </span>
             </h2>
-            <p className="mt-4 text-gray-400 text-xs sm:text-sm tracking-wide leading-relaxed max-w-sm">
+            <p className="mt-3 text-gray-400 text-xs sm:text-sm tracking-wide leading-relaxed max-w-xl">
               Expertise integrada e rigor técnico em cada etapa do design, planejamento e execução da sua obra.
             </p>
-            
-            <div className="mt-8 w-full sm:w-auto">
-              <button className="w-full sm:w-auto text-[10px] font-semibold tracking-widest uppercase border border-white/20 text-white px-6 py-3 rounded-sm hover:bg-[#9a1c24] hover:border-[#9a1c24] transition-all duration-300 flex items-center justify-center gap-3 group">
-                Explorar Serviços
-                <span className="transform group-hover:translate-x-1 transition-transform text-[#9a1c24]">&rarr;</span>
-              </button>
-            </div>
           </div>
 
-          {/* COLUNA DIREITA: GRID DE CARDS VERTICAIS (FIEL À IMAGE_3E3BBF.PNG) */}
-          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-stretch">
+          {/* CONTROLLER LATERAL E CONTAINER DOS CARDS INTEGRADOS */}
+          <div className="relative flex items-center justify-between gap-4 w-full min-h-[440px] md:min-h-[380px]">
             
-            {/* CARD 1: ARQUITETURA */}
-{/* CARD 1: ARQUITETURA (Ocupa 2 de 6 colunas no desktop = 1/3 da largura) */}
-      <div className="bg-[#1a1d24]/40 border border-white/5 rounded-xl p-8 flex flex-col items-center text-center justify-between min-h-[300px] transition-all duration-300 hover:border-[#9a1c24]/30 hover:bg-[#1a1d24]/80 hover:-translate-y-1 group sm:col-span-1 md:col-span-2">
-        <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m15 5-3-3-3 3"/><path d="M12 2v20"/><path d="m5 16 7-9 7 9"/><path d="M19 19H5"/></svg>
-        </div>
-        <div className="flex flex-col items-center flex-grow justify-center mt-6">
-          <h3 className="font-serif text-base tracking-wide font-light text-white mb-3">Arquitetura</h3>
-          <p className="text-xs text-gray-400 tracking-wide leading-relaxed">Projetos conceituais que equilibram perfeitamente criatividade e funcionalidade.</p>
-        </div>
-      </div>
+            {/* BOTÃO VOLTAR (LADO ESQUERDO) */}
+            <button 
+              onClick={() => setGrupoAtivo(0)}
+              className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-300 text-base shrink-0 z-20 ${
+                grupoAtivo === 0 
+                  ? 'border-[#9a1c24] bg-[#9a1c24] text-white shadow-lg shadow-[#9a1c24]/20' 
+                  : 'border-white/10 text-gray-400 hover:border-white/40 hover:text-white bg-[#1a1d24]/50'
+              }`}
+              aria-label="Primeiros serviços"
+            >
+              &larr;
+            </button>
 
-            {/* CARD 2: CONSTRUÇÃO RESIDENCIAL */}
-            <div className="bg-[#1a1d24]/40 border border-white/5 rounded-xl p-6 flex flex-col items-center text-center justify-between min-h-[300px] transition-all duration-300 hover:border-[#9a1c24]/30 hover:bg-[#1a1d24]/80 hover:-translate-y-1 group">
-              <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4">
-                {/* Ícone de Casa / Residencial */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            {/* AREA CENTRAL DO CARROSSEL */}
+            <div className="relative flex-grow h-full min-h-[420px] md:min-h-[360px]">
+              
+              {/* GRUPO 1: CARDS 1, 2 e 3 */}
+              <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch absolute inset-0 w-full transition-all duration-700 ease-in-out ${
+                grupoAtivo === 0 ? 'opacity-100 pointer-events-auto translate-x-0' : 'opacity-0 pointer-events-none -translate-x-8'
+              }`}>
+                {/* CARD 1: ARQUITETURA */}
+                <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+                  <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m15 5-3-3-3 3"/><path d="M12 2v20"/><path d="m5 16 7-9 7 9"/><path d="M19 19H5"/></svg>
+                  </div>
+                  <div className="flex flex-col items-center flex-grow justify-center mt-6">
+                    <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Arquitetura</h3>
+                    <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Projetos conceituais que equilibram perfeitamente criatividade, estética e funcionalidade residencial.</p>
+                  </div>
+                </div>
+
+                {/* CARD 2: CONSTRUÇÃO RESIDENCIAL */}
+                <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+                  <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
+                  <div className="flex flex-col items-center flex-grow justify-center mt-6">
+                    <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Residencial</h3>
+                    <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Casas exclusivas de alto padrão construídas do zero com precisão, engenharia fina e cuidado absoluto.</p>
+                  </div>
+                </div>
+
+                {/* CARD 3: EDIFICAÇÕES COMERCIAIS */}
+                <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+                  <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="10" width="10" height="12" rx="2"/><rect x="12" y="2" width="10" height="20" rx="2"/><path d="M6 14h.01"/><path d="M6 18h.01"/><path d="M16 6h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M16 18h.01"/></svg>
+                  </div>
+                  <div className="flex flex-col items-center flex-grow justify-center mt-6">
+                    <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Comercial</h3>
+                    <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Espaços corporativos, layouts logísticos e comerciais de alta performance projetados para negócios.</p>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col items-center flex-grow justify-center mt-6">
-                <h3 className="font-serif text-md tracking-wide font-light text-white mb-3">Residencial</h3>
-                <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed">Casas exclusivas de alto padrão construídas com precisão e cuidado absoluto.</p>
+
+              {/* GRUPO 2: CARDS 4, 5 e 6 */}
+              <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch absolute inset-0 w-full transition-all duration-700 ease-in-out ${
+                grupoAtivo === 1 ? 'opacity-100 pointer-events-auto translate-x-0' : 'opacity-0 pointer-events-none translate-x-8'
+              }`}>
+                {/* CARD 4: DESIGN DE INTERIORES */}
+                <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+                  <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11h18"/><path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/><path d="M12 2v3"/><path d="M6 11v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/><path d="M9 20v2"/><path d="M15 20v2"/></svg>
+                  </div>
+                  <div className="flex flex-col items-center flex-grow justify-center mt-6">
+                    <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Interiores</h3>
+                    <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Interiores sofisticados, marcenaria planejada e detalhamento estético totalmente adaptados ao seu bem-estar.</p>
+                  </div>
+                </div>
+
+                {/* CARD 5: GESTÃO E GERENCIAMENTO */}
+                <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+                  <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+                  </div>
+                  <div className="flex flex-col items-center flex-grow justify-center mt-6">
+                    <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Gestão de Obras</h3>
+                    <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Execução contínua e transparente, cuidando do gerenciamento de custos à entrega final das chaves.</p>
+                  </div>
+                </div>
+
+                {/* CARD 6: CONSULTORIA TÉCNICA */}
+                <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+                  <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                  </div>
+                  <div className="flex flex-col items-center flex-grow justify-center mt-6">
+                    <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Consultoria</h3>
+                    <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Estudos de viabilidade técnica, laudos estruturais e análises para garantir segurança patrimonial.</p>
+                  </div>
+                </div>
               </div>
+
             </div>
 
-            {/* CARD 3: EDIFICAÇÕES COMERCIAIS */}
-            <div className="bg-[#1a1d24]/40 border border-white/5 rounded-xl p-6 flex flex-col items-center text-center justify-between min-h-[320px] transition-all duration-300 hover:border-[#9a1c24]/30 hover:bg-[#1a1d24]/80 hover:-translate-y-1 group">
-              <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4">
-                {/* Ícone de Prédios / Comercial */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="10" width="10" height="12" rx="2"/><rect x="12" y="2" width="10" height="20" rx="2"/><path d="M6 14h.01"/><path d="M6 18h.01"/><path d="M16 6h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M16 18h.01"/></svg>
-              </div>
-              <div className="flex flex-col items-center flex-grow justify-center mt-6">
-                <h3 className="font-serif text-md tracking-wide font-light text-white mb-3">Comercial</h3>
-                <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed">Espaços corporativos de alta performance projetados para negócios modernos.</p>
-              </div>
-            </div>
+            {/* BOTÃO AVANÇAR (LADO DIREITO) */}
+            <button 
+              onClick={() => setGrupoAtivo(1)}
+              className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all duration-300 text-base shrink-0 z-20 ${
+                grupoAtivo === 1 
+                  ? 'border-[#9a1c24] bg-[#9a1c24] text-white shadow-lg shadow-[#9a1c24]/20' 
+                  : 'border-white/10 text-gray-400 hover:border-white/40 hover:text-white bg-[#1a1d24]/50'
+              }`}
+              aria-label="Próximos serviços"
+            >
+              &rarr;
+            </button>
 
-            {/* CARD 4: DESIGN DE INTERIORES */}
-            <div className="bg-[#1a1d24]/40 border border-white/5 rounded-xl p-6 flex flex-col items-center text-center justify-between min-h-[320px] transition-all duration-300 hover:border-[#9a1c24]/30 hover:bg-[#1a1d24]/80 hover:-translate-y-1 group">
-              <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4">
-                {/* Ícone de Poltrona e Luminária / Interiores */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11h18"/><path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/><path d="M12 2v3"/><path d="M6 11v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/><path d="M9 20v2"/><path d="M15 20v2"/></svg>
-              </div>
-              <div className="flex flex-col items-center flex-grow justify-center mt-6">
-                <h3 className="font-serif text-md tracking-wide font-light text-white mb-3">Interiores</h3>
-                <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed">Interiores sofisticados, funcionais e totalmente adaptados ao seu estilo de vida.</p>
-              </div>
-            </div>
+          </div>
 
-            {/* CARD 5: GESTÃO DE PROJETOS */}
-            <div className="bg-[#1a1d24]/40 border border-white/5 rounded-xl p-6 flex flex-col items-center text-center justify-between min-h-[320px] transition-all duration-300 hover:border-[#9a1c24]/30 hover:bg-[#1a1d24]/80 hover:-translate-y-1 group">
-              <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4">
-                {/* Ícone de Prancheta de Métricas / Gestão */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
-              </div>
-              <div className="flex flex-col items-center flex-grow justify-center mt-6">
-                <h3 className="font-serif text-md tracking-wide font-light text-white mb-3">Gestão</h3>
-                <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed">Execução contínua, do gerenciamento de custos à entrega das chaves.</p>
-              </div>
-            </div>
-
+          {/* INDICADORES INFERIORES */}
+          <div className="flex justify-center items-center gap-2 mt-2">
+            <button onClick={() => setGrupoAtivo(0)} className={`h-1.5 rounded-full transition-all duration-300 ${grupoAtivo === 0 ? 'w-6 bg-[#9a1c24]' : 'w-2 bg-white/20'}`} />
+            <button onClick={() => setGrupoAtivo(1)} className={`h-1.5 rounded-full transition-all duration-300 ${grupoAtivo === 1 ? 'w-6 bg-[#9a1c24]' : 'w-2 bg-white/20'}`} />
           </div>
 
         </div>
       </section>
 
+      {/* ==========================================
+          QUARTA DOBRA: PROJETOS & PROCESSO (CREME CLARO)
+          ========================================== */}
+      <section id="projetos" className="relative w-full bg-[#f9f6f0] py-20 md:py-24 px-6 text-[#121417] z-10 border-t border-black/5">
+        <div className="max-w-7xl mx-auto flex flex-col gap-16">
+          
+          {/* PARTE 1: ABAS / GALERIA DE PROJETOS COMPLETA */}
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="flex flex-col items-start">
+                <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4">
+                  Portfólio Expandido
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-light tracking-wide leading-tight text-[#121417] font-serif">
+                  Nossas <span className="font-semibold">Obras Recentes</span>
+                </h2>
+              </div>
+              
+              {/* Filtros decorativos baseados no escopo minimalista */}
+              <div className="flex flex-wrap gap-2 text-[11px] font-medium tracking-widest uppercase text-gray-500">
+                <span className="px-4 py-2 bg-[#121417] text-white rounded-sm cursor-pointer">Todos</span>
+                <span className="px-4 py-2 hover:text-[#121417] cursor-pointer transition-colors">Residencial</span>
+                <span className="px-4 py-2 hover:text-[#121417] cursor-pointer transition-colors">Corporativo</span>
+                <span className="px-4 py-2 hover:text-[#121417] cursor-pointer transition-colors">Interiores</span>
+              </div>
+            </div>
+
+            {/* Grid de Projetos do Portfólio */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Projeto 1 */}
+              <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800">
+                <Image 
+                  src="/hero-bg.png" 
+                  alt="Residência Alphaville" 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                <div className="relative p-6 text-white z-10">
+                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Alto Padrão</span>
+                  <h3 className="font-serif text-xl font-light mt-1">Residência Alphaville</h3>
+                  <p className="text-xs text-gray-300 mt-1">Leme, SP</p>
+                </div>
+              </div>
+
+              {/* Projeto 2 */}
+              <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800">
+                <Image 
+                  src="/pirassununga-foto.png" 
+                  alt="Corporate Tower" 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                <div className="relative p-6 text-white z-10">
+                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Comercial</span>
+                  <h3 className="font-serif text-xl font-light mt-1">Corporate Tower</h3>
+                  <p className="text-xs text-gray-300 mt-1">Campinas, SP</p>
+                </div>
+              </div>
+
+              {/* Projeto 3 */}
+              <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800">
+                <Image 
+                  src="/hero-bg.png" 
+                  alt="Loft Integrado" 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                <div className="relative p-6 text-white z-10">
+                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Interiores</span>
+                  <h3 className="font-serif text-xl font-light mt-1">Loft Integrado</h3>
+                  <p className="text-xs text-gray-300 mt-1">Araras, SP</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr className="border-black/5" />
+
+          {/* PARTE 2: NOSSO PROCESSO (Fiel ao layout "Our Process") */}
+          <div className="flex flex-col gap-12 pt-4">
+            <div className="text-center md:text-left">
+              <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4 inline-block md:inline">
+                Metodologia
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-light tracking-wide text-[#121417] font-serif mt-2">
+                Uma Jornada Contínua <br className="hidden md:block"/>
+                <span className="font-semibold text-[#1a1d24]">Do Conceito à Realidade</span>
+              </h2>
+            </div>
+
+            {/* Linha do Tempo Estilizada do Layout */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative">
+              
+              {/* Passo 01 */}
+              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
+                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">
+                  01
+                </div>
+                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Alinhamento</h4>
+                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">
+                  Entendemos suas necessidades, objetivos de investimento, prazos e expectativas iniciais.
+                </p>
+              </div>
+
+              {/* Passo 02 */}
+              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
+                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">
+                  02
+                </div>
+                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Estudo Técnico</h4>
+                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">
+                  Análise rigorosa de viabilidade, topografia e adequações legais estruturadas milimetricamente.
+                </p>
+              </div>
+
+              {/* Passo 03 */}
+              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
+                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">
+                  03
+                </div>
+                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Engenharia Fina</h4>
+                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">
+                  Desenvolvimento do design executivo cruzando estética arquitetônica e soluções de alta performance.
+                </p>
+              </div>
+
+              {/* Passo 04 */}
+              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
+                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">
+                  04
+                </div>
+                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Construção Ativa</h4>
+                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">
+                  Execução de obra com fiscalização rígida de materiais, gestão de custos e cronograma transparente.
+                </p>
+              </div>
+
+              {/* Passo 05 */}
+              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
+                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">
+                  05
+                </div>
+                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Entrega de Chaves</h4>
+                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">
+                  Inspeção minuciosa de acabamentos e validação de engenharia com garantia de pós-entrega diferenciada.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }
