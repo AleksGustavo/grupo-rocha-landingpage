@@ -5,14 +5,28 @@ import Image from 'next/image';
 
 export default function Home() {
   const [grupoAtivo, setGrupoAtivo] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Efeito para alternar os cards a cada 5 segundos de forma automatizada
+  // 1. Detectar o tamanho da tela de forma segura no Client-side
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // 2. Efeito para alternar os cards de forma automatizada respeitando o limite do Mobile e Desktop
   useEffect(() => {
     const interval = setInterval(() => {
-      setGrupoAtivo((prev) => (prev === 0 ? 1 : 0));
+      setGrupoAtivo((prev) => {
+        const limiteMaximo = isMobile ? 2 : 1;
+        return prev >= limiteMaximo ? 0 : prev + 1;
+      });
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="min-h-screen bg-[#121417] flex flex-col selection:bg-[#9a1c24] selection:text-white">
