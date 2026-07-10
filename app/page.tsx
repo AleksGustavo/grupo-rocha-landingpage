@@ -195,11 +195,11 @@ export default function Home() {
       </section>
 
 {/* ==========================================
-    TERCEIRA DOBRA: SERVIÇOS (SLIDER DINÂMICO) - TAMANHO REDUZIDO & MOBILE 2x2
+    TERCEIRA DOBRA: SERVIÇOS (SLIDER DINÂMICO ADAPTATIVO 6 CARDS)
     ========================================== */}
     
-<section id="servicos" className="relative w-full bg-[#121417] py-16 md:py-20 px-4 sm:px-6 border-t border-white/5 z-10 overflow-hidden">
-  <div className="max-w-7xl mx-auto flex flex-col gap-10">
+<section id="servicos" className="relative w-full bg-[#121417] py-12 md:py-20 px-4 sm:px-6 border-t border-white/5 z-10 overflow-hidden">
+  <div className="max-w-7xl mx-auto flex flex-col gap-8 md:gap-10">
     
     {/* CABEÇALHO DA SEÇÃO */}
     <div className="flex flex-col items-start max-w-5xl mx-auto w-full">
@@ -220,123 +220,168 @@ export default function Home() {
     {/* CONTROLLER LATERAL E CONTAINER DOS CARDS INTEGRADOS */}
     <div className="relative flex items-center justify-between gap-2 sm:gap-4 w-full max-w-5xl mx-auto">
       
-      {/* BOTÃO VOLTAR (LADO ESQUERDO) */}
+      {/* BOTÃO VOLTAR */}
       <button 
-        onClick={() => setGrupoAtivo(0)}
+        onClick={() => setGrupoAtivo((prev) => (prev > 0 ? prev - 1 : 0))}
         className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all duration-300 text-base shrink-0 z-20 ${
           grupoAtivo === 0 
-            ? 'border-[#9a1c24] bg-[#9a1c24] text-white shadow-lg shadow-[#9a1c24]/20' 
-            : 'border-white/10 text-gray-400 hover:border-white/40 hover:text-white bg-[#1a1d24]/50'
+            ? 'border-white/5 bg-white/5 text-gray-600 cursor-not-allowed opacity-50' 
+            : 'border-[#9a1c24] bg-[#9a1c24] text-white shadow-lg shadow-[#9a1c24]/20'
         }`}
-        aria-label="Primeiros serviços"
+        aria-label="Voltar serviços"
+        disabled={grupoAtivo === 0}
       >
         &larr;
       </button>
 
       {/* AREA CENTRAL DO CARROSSEL */}
-      {/* Removemos a altura fixa excessiva para evitar quebras de layout */}
-      <div className="relative flex-grow min-h-[380px] sm:min-h-[400px] md:min-h-[360px]">
+      {/* Removemos min-h para que a altura encolha e fique compacta no mobile */}
+      <div className="relative flex-grow min-h-[290px] sm:min-h-[320px] md:min-h-[360px]">
         
-        {/* GRUPO 1: CARDS 1, 2 e 3 */}
-        {/* Alterado para grid-cols-2 no mobile e md:grid-cols-3 no desktop */}
+        {/* GRUPO 1: CARDS 1 e 2 (Mobile) / CARDS 1, 2 e 3 (Desktop) */}
         <div className={`grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 items-stretch absolute inset-0 w-full transition-all duration-700 ease-in-out ${
           grupoAtivo === 0 ? 'opacity-100 pointer-events-auto translate-x-0' : 'opacity-0 pointer-events-none -translate-x-8'
         }`}>
           {/* CARD 1: ARQUITETURA */}
-          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
-            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-2 transform group-hover:scale-110 transition-transform">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m15 5-3-3-3 3"/><path d="M12 2v20"/><path d="m5 16 7-9 7 9"/><path d="M19 19H5"/></svg>
+          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-1 transform group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m15 5-3-3-3 3"/><path d="M12 2v20"/><path d="m5 16 7-9 7 9"/><path d="M19 19H5"/></svg>
             </div>
-            <div className="flex flex-col items-center flex-grow justify-center mt-4">
-              <h3 className="font-serif text-base sm:text-xl md:text-2xl tracking-wide font-light text-white mb-2">Arquitetura</h3>
-              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-4 md:line-clamp-none">Projetos conceituais que equilibram perfeitamente criatividade, estética e funcionalidade residencial.</p>
+            <div className="flex flex-col items-center flex-grow justify-center mt-3">
+              <h3 className="font-serif text-sm sm:text-xl md:text-2xl tracking-wide font-light text-white mb-1.5">Arquitetura</h3>
+              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-3 md:line-clamp-none">Projetos conceituais que equilibram perfeitamente criatividade e funcionalidade.</p>
             </div>
           </div>
 
           {/* CARD 2: CONSTRUÇÃO RESIDENCIAL */}
-          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
-            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-2 transform group-hover:scale-110 transition-transform">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-1 transform group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
-            <div className="flex flex-col items-center flex-grow justify-center mt-4">
-              <h3 className="font-serif text-base sm:text-xl md:text-2xl tracking-wide font-light text-white mb-2">Residencial</h3>
-              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-4 md:line-clamp-none">Casas exclusivas de alto padrão construídas do zero com precisão, engenharia fina e cuidado absoluto.</p>
+            <div className="flex flex-col items-center flex-grow justify-center mt-3">
+              <h3 className="font-serif text-sm sm:text-xl md:text-2xl tracking-wide font-light text-white mb-1.5">Residencial</h3>
+              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-3 md:line-clamp-none">Casas exclusivas de alto padrão construídas com precisão e cuidado absoluto.</p>
             </div>
           </div>
 
           {/* CARD 3: EDIFICAÇÕES COMERCIAIS */}
-          {/* Adicionado 'hidden md:flex' para que no mobile (grid-cols-2) este 3º card não quebre o layout empilhando para baixo */}
+          {/* No mobile ele se move para o Grupo 2, no Desktop fica fixo aqui */}
           <div className="hidden md:flex bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
             <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="10" width="10" height="12" rx="2"/><rect x="12" y="2" width="10" height="20" rx="2"/><path d="M6 14h.01"/><path d="M6 18h.01"/><path d="M16 6h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M16 18h.01"/></svg>
             </div>
             <div className="flex flex-col items-center flex-grow justify-center mt-6">
               <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Comercial</h3>
-              <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Espaços corporativos, layouts logísticos e comerciais de alta performance projetados para negócios.</p>
+              <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Espaços corporativos e comerciais de alta performance projetados para negócios.</p>
             </div>
           </div>
         </div>
 
-        {/* GRUPO 2: CARDS 4, 5 e 6 */}
+        {/* GRUPO 2: CARDS 3 e 4 (Mobile) / CARDS 4, 5 e 6 (Desktop) */}
         <div className={`grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 items-stretch absolute inset-0 w-full transition-all duration-700 ease-in-out ${
-          grupoAtivo === 1 ? 'opacity-100 pointer-events-auto translate-x-0' : 'opacity-0 pointer-events-none translate-x-8'
+          grupoAtivo === 1 ? 'opacity-100 pointer-events-auto translate-x-0' : 'opacity-0 pointer-events-none ' + (grupoAtivo > 1 ? '-translate-x-8' : 'translate-x-8')
         }`}>
-          {/* CARD 4: DESIGN DE INTERIORES */}
-          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
-            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-2 transform group-hover:scale-110 transition-transform">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11h18"/><path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/><path d="M12 2v3"/><path d="M6 11v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/><path d="M9 20v2"/><path d="M15 20v2"/></svg>
+          {/* CARD 3 (REPETIDO APENAS NO MOBILE) */}
+          <div className="flex md:hidden bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-1 transform group-hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="10" width="10" height="12" rx="2"/><rect x="12" y="2" width="10" height="20" rx="2"/><path d="M6 14h.01"/><path d="M6 18h.01"/><path d="M16 6h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M16 18h.01"/></svg>
             </div>
-            <div className="flex flex-col items-center flex-grow justify-center mt-4">
-              <h3 className="font-serif text-base sm:text-xl md:text-2xl tracking-wide font-light text-white mb-2">Interiores</h3>
-              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-4 md:line-clamp-none">Interiores sofisticados, marcenaria planejada e detalhamento estético totalmente adaptados ao seu bem-estar.</p>
+            <div className="flex flex-col items-center flex-grow justify-center mt-3">
+              <h3 className="font-serif text-sm tracking-wide font-light text-white mb-1.5">Comercial</h3>
+              <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed line-clamp-3">Espaços corporativos e comerciais de alta performance projetados para negócios.</p>
             </div>
           </div>
 
-          {/* CARD 5: GESTÃO E GERENCIAMENTO */}
-          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
-            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-2 transform group-hover:scale-110 transition-transform">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+          {/* CARD 4: DESIGN DE INTERIORES */}
+          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 md:p-8 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-1 transform group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11h18"/><path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/><path d="M12 2v3"/><path d="M6 11v7c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-7"/><path d="M9 20v2"/><path d="M15 20v2"/></svg>
             </div>
-            <div className="flex flex-col items-center flex-grow justify-center mt-4">
-              <h3 className="font-serif text-base sm:text-xl md:text-2xl tracking-wide font-light text-white mb-2">Gestão de Obras</h3>
-              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-4 md:line-clamp-none">Execução contínua e transparente, cuidando do gerenciamento de custos à entrega final das chaves.</p>
+            <div className="flex flex-col items-center flex-grow justify-center mt-3">
+              <h3 className="font-serif text-sm sm:text-xl md:text-2xl tracking-wide font-light text-white mb-1.5">Interiores</h3>
+              <p className="text-[11px] sm:text-sm md:text-base text-gray-400 tracking-wide leading-relaxed line-clamp-3 md:line-clamp-none">Interiores sofisticados, marcenaria e detalhamento adaptados ao seu bem-estar.</p>
+            </div>
+          </div>
+
+          {/* CARD 5: GESTÃO E GERENCIAMENTO (No desktop fica no grupo 2, no mobile também) */}
+          <div className="hidden md:flex bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
+              <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+            </div>
+            <div className="flex flex-col items-center flex-grow justify-center mt-6">
+              <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Gestão de Obras</h3>
+              <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Execução contínua e transparente, cuidando dos custos até a entrega das chaves.</p>
             </div>
           </div>
 
           {/* CARD 6: CONSULTORIA TÉCNICA */}
-          {/* Oculto no mobile para manter simetria 2x2 do slider */}
           <div className="hidden md:flex bg-[#1a1d24]/40 border border-white/20 rounded-xl p-8 flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 hover:-translate-y-1 group cursor-pointer">
             <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-4 transform group-hover:scale-110 transition-transform">
               <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
             </div>
             <div className="flex flex-col items-center flex-grow justify-center mt-6">
               <h3 className="font-serif text-xl md:text-2xl tracking-wide font-light text-white mb-3">Consultoria</h3>
-              <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Estudos de viabilidade técnica, laudos estruturais e análises para garantir segurança patrimonial.</p>
+              <p className="text-sm md:text-base text-gray-400 tracking-wide leading-relaxed">Estudos de viabilidade técnica, laudos estruturais e análises patrimoniais.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* GRUPO 3: CARDS 5 e 6 (EXCLUSIVO MOBILE) */}
+        <div className={`grid grid-cols-2 md:hidden gap-3 items-stretch absolute inset-0 w-full transition-all duration-700 ease-in-out ${
+          grupoAtivo === 2 ? 'opacity-100 pointer-events-auto translate-x-0' : 'opacity-0 pointer-events-none translate-x-8'
+        }`}>
+          {/* CARD 5 NO MOBILE */}
+          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-1 transform group-hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+            </div>
+            <div className="flex flex-col items-center flex-grow justify-center mt-3">
+              <h3 className="font-serif text-sm tracking-wide font-light text-white mb-1.5">Gestão de Obras</h3>
+              <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed line-clamp-3">Execução contínua e transparente, cuidando dos custos até a entrega das chaves.</p>
+            </div>
+          </div>
+
+          {/* CARD 6 NO MOBILE */}
+          <div className="bg-[#1a1d24]/40 border border-white/20 rounded-xl p-4 flex flex-col items-center text-center justify-between transition-all duration-300 hover:border-[#9a1c24] hover:bg-[#1a1d24]/80 group cursor-pointer">
+            <div className="text-[#c5a880] group-hover:text-white transition-colors duration-300 mt-1 transform group-hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <div className="flex flex-col items-center flex-grow justify-center mt-3">
+              <h3 className="font-serif text-sm tracking-wide font-light text-white mb-1.5">Consultoria</h3>
+              <p className="text-[11px] text-gray-400 tracking-wide leading-relaxed line-clamp-3">Estudos de viabilidade técnica, laudos estruturais e análises patrimoniais.</p>
             </div>
           </div>
         </div>
 
       </div>
 
-      {/* BOTÃO AVANÇAR (LADO DIREITO) */}
+      {/* BOTÃO AVANÇAR */}
+      {/* No mobile o limite vai até o grupo 2 (3ª página). No desktop, limita-se ao grupo 1 (2ª página) */}
       <button 
-        onClick={() => setGrupoAtivo(1)}
+        onClick={() => setGrupoAtivo((prev) => {
+          const isMobile = window.innerWidth < 768;
+          const limiteMaximo = isMobile ? 2 : 1;
+          return prev < limiteMaximo ? prev + 1 : prev;
+        })}
         className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all duration-300 text-base shrink-0 z-20 ${
-          grupoAtivo === 1 
-            ? 'border-[#9a1c24] bg-[#9a1c24] text-white shadow-lg shadow-[#9a1c24]/20' 
-            : 'border-white/10 text-gray-400 hover:border-white/40 hover:text-white bg-[#1a1d24]/50'
+          (grupoAtivo === 1 && window.innerWidth >= 768) || grupoAtivo === 2
+            ? 'border-white/5 bg-white/5 text-gray-600 cursor-not-allowed opacity-50' 
+            : 'border-[#9a1c24] bg-[#9a1c24] text-white shadow-lg shadow-[#9a1c24]/20'
         }`}
         aria-label="Próximos serviços"
+        disabled={(grupoAtivo === 1 && typeof window !== 'undefined' && window.innerWidth >= 768) || grupoAtivo === 2}
       >
         &rarr;
       </button>
 
     </div>
 
-    {/* INDICADORES INFERIORES */}
+    {/* INDICADORES INFERIORES ADAPTATIVOS */}
     <div className="flex justify-center items-center gap-2 mt-2">
       <button onClick={() => setGrupoAtivo(0)} className={`h-1.5 rounded-full transition-all duration-300 ${grupoAtivo === 0 ? 'w-6 bg-[#9a1c24]' : 'w-2 bg-white/20'}`} />
       <button onClick={() => setGrupoAtivo(1)} className={`h-1.5 rounded-full transition-all duration-300 ${grupoAtivo === 1 ? 'w-6 bg-[#9a1c24]' : 'w-2 bg-white/20'}`} />
+      {/* Esta terceira bolinha só aparecerá visível no layout mobile */}
+      <button onClick={() => setGrupoAtivo(2)} className={`md:hidden h-1.5 rounded-full transition-all duration-300 ${grupoAtivo === 2 ? 'w-6 bg-[#9a1c24]' : 'w-2 bg-white/20'}`} />
     </div>
 
   </div>
