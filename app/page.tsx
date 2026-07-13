@@ -489,11 +489,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==========================================
-          QUARTA DOBRA: PROJETOS & PROCESSO
+{/* ==========================================
+          QUARTA DOBRA: PROJETOS
           ========================================== */}
       <section id="projetos" className="relative w-full bg-[#f9f6f0] py-20 md:py-24 px-6 text-[#121417] z-10 border-t border-black/5">
-        <div className="max-w-7xl mx-auto flex flex-col gap-16">
+        <div className="max-w-7xl mx-auto flex flex-col gap-12 md:gap-16">
           <div className="flex flex-col gap-10">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="flex flex-col items-start">
@@ -513,83 +513,108 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800">
-                <Image src="/hero-bg.png" alt="Residência Alphaville" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="relative p-6 text-white z-10">
-                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Alto Padrão</span>
-                  <h3 className="font-serif text-xl font-light mt-1">Residência Alphaville</h3>
-                  <p className="text-xs text-gray-300 mt-1">Leme, SP</p>
+            {/* CONTÊINER COM OS BOTÕES LATERAIS E CARROSSEL */}
+            <div className="relative w-full flex items-center gap-4">
+              
+              {/* BOTÃO VOLTAR (APENAS DESKTOP) */}
+              <button
+                onClick={() => {
+                  if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollBy({ left: -380, behavior: "smooth" });
+                  }
+                }}
+                className="w-12 h-12 rounded-full border border-black/10 bg-white text-[#121417] hover:bg-[#9a1c24] hover:text-white hover:border-[#9a1c24] shadow-md hidden md:flex items-center justify-center transition-all duration-300 shrink-0 z-20"
+                aria-label="Voltar obras"
+              >
+                &larr;
+              </button>
+
+              {/* CONTAINER DOS CARDS (Transicionado para Flex dinâmico em todas as telas) */}
+              <div 
+                ref={scrollContainerRef}
+                className="w-full overflow-x-auto flex gap-6 md:gap-8 snap-x snap-mandatory pb-4 md:pb-2 no-scrollbar scroll-smooth"
+              >
+                {/* CARD 1 */}
+                <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800 min-w-[85vw] md:min-w-[calc(33.333%-22px)] snap-start shrink-0">
+                  <Image src="/hero-bg.png" alt="Residência Alphaville" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <div className="relative p-6 text-white z-10">
+                    <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Alto Padrão</span>
+                    <h3 className="font-serif text-xl font-light mt-1">Residência Alphaville</h3>
+                    <p className="text-xs text-gray-300 mt-1">Leme, SP</p>
+                  </div>
                 </div>
+
+                {/* CARD 2 */}
+                <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800 min-w-[85vw] md:min-w-[calc(33.333%-22px)] snap-start shrink-0">
+                  <Image src="/pirassununga-foto.png" alt="Corporate Tower" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <div className="relative p-6 text-white z-10">
+                    <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Comercial</span>
+                    <h3 className="font-serif text-xl font-light mt-1">Corporate Tower</h3>
+                    <p className="text-xs text-gray-300 mt-1">Campinas, SP</p>
+                  </div>
+                </div>
+
+                {/* CARD 3 */}
+                <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800 min-w-[85vw] md:min-w-[calc(33.333%-22px)] snap-start shrink-0">
+                  <Image src="/hero-bg.png" alt="Loft Integrado" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <div className="relative p-6 text-white z-10">
+                    <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Interiores</span>
+                    <h3 className="font-serif text-xl font-light mt-1">Loft Integrado</h3>
+                    <p className="text-xs text-gray-300 mt-1">Araras, SP</p>
+                  </div>
+                </div>
+
+                {/* CARD 4 (Novo card para transição) */}
+                <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800 min-w-[85vw] md:min-w-[calc(33.333%-22px)] snap-start shrink-0">
+                  <Image src="/pirassununga-foto.png" alt="Residência Conceito" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <div className="relative p-6 text-white z-10">
+                    <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Alto Padrão</span>
+                    <h3 className="font-serif text-xl font-light mt-1">Residência Conceito</h3>
+                    <p className="text-xs text-gray-300 mt-1">Pirassununga, SP</p>
+                  </div>
+                </div>
+
+                {/* CARD 5 (Novo card para transição) */}
+                <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800 min-w-[85vw] md:min-w-[calc(33.333%-22px)] snap-start shrink-0">
+                  <Image src="/hero-bg.png" alt="Escritório Executive" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  <div className="relative p-6 text-white z-10">
+                    <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Corporativo</span>
+                    <h3 className="font-serif text-xl font-light mt-1">Escritório Executive</h3>
+                    <p className="text-xs text-gray-300 mt-1">Campinas, SP</p>
+                  </div>
+                </div>
+
               </div>
 
-              <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800">
-                <Image src="/pirassununga-foto.png" alt="Corporate Tower" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="relative p-6 text-white z-10">
-                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Comercial</span>
-                  <h3 className="font-serif text-xl font-light mt-1">Corporate Tower</h3>
-                  <p className="text-xs text-gray-300 mt-1">Campinas, SP</p>
-                </div>
-              </div>
-
-              <div className="group relative flex flex-col justify-end h-[380px] rounded-2xl overflow-hidden shadow-lg bg-neutral-800">
-                <Image src="/hero-bg.png" alt="Loft Integrado" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105 brightness-95" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="relative p-6 text-white z-10">
-                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#c5a880]">Interiores</span>
-                  <h3 className="font-serif text-xl font-light mt-1">Loft Integrado</h3>
-                  <p className="text-xs text-gray-300 mt-1">Araras, SP</p>
-                </div>
-              </div>
+              {/* BOTÃO AVANÇAR (APENAS DESKTOP) */}
+              <button
+                onClick={() => {
+                  if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollBy({ left: 380, behavior: "smooth" });
+                  }
+                }}
+                className="w-12 h-12 rounded-full border border-black/10 bg-white text-[#121417] hover:bg-[#9a1c24] hover:text-white hover:border-[#9a1c24] shadow-md hidden md:flex items-center justify-center transition-all duration-300 shrink-0 z-20"
+                aria-label="Avançar obras"
+              >
+                &rarr;
+              </button>
             </div>
           </div>
 
-          <hr className="border-black/5" />
-
-          <div className="flex flex-col gap-12 pt-4">
-            <div className="text-center md:text-left">
-              <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4 inline-block md:inline">
-                Metodologia
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-light tracking-wide text-[#121417] font-serif mt-2">
-                Uma Jornada Contínua <br className="hidden md:block" />
-                <span className="font-semibold text-[#1a1d24]">Do Conceito à Realidade</span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative">
-              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
-                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">01</div>
-                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Alinhamento</h4>
-                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">Entendemos suas necessidades, objetivos de investimento, prazos e expectativas.</p>
-              </div>
-
-              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
-                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">02</div>
-                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Estudo Técnico</h4>
-                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">Análise rigorosa de viabilidade, topografia e adequações legais estruturadas milimetricamente.</p>
-              </div>
-
-              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
-                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">03</div>
-                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Engenharia Fina</h4>
-                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">Desenvolvimento do design executivo cruzando estética arquitetônica e alta performance.</p>
-              </div>
-
-              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
-                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">04</div>
-                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Construção Ativa</h4>
-                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">Execução de obra com fiscalização rígida de materiais e cronograma transparente.</p>
-              </div>
-
-              <div className="flex flex-col items-center md:items-start text-center md:text-left group">
-                <div className="w-10 h-10 rounded-full bg-[#121417] text-[#c5a880] font-medium text-xs flex items-center justify-center shadow-md border border-white/10 group-hover:bg-[#9a1c24] group-hover:text-white transition-colors duration-300">05</div>
-                <h4 className="font-serif text-base font-semibold text-[#121417] mt-4 mb-2">Entrega de Chaves</h4>
-                <p className="text-xs text-gray-600 tracking-wide leading-relaxed">Inspeção minuciosa de acabamentos e validação com garantia de pós-entrega.</p>
-              </div>
-            </div>
+          {/* BOTÃO CENTRALIZADO PARA VER TODAS AS OBRAS */}
+          <div className="flex justify-center mt-4">
+            <a 
+              href="/portfolio" 
+              className="text-[11px] font-medium tracking-widest uppercase bg-[#121417] text-white px-8 py-4 rounded-sm hover:bg-[#9a1c24] transition-all duration-300 shadow-md flex items-center gap-3 group"
+            >
+              Visualizar Todas as Obras
+              <span className="transform group-hover:translate-x-1 transition-transform duration-300">&rarr;</span>
+            </a>
           </div>
         </div>
       </section>
