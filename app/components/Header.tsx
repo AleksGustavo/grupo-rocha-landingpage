@@ -14,7 +14,7 @@ export default function Header() {
       setIsScrolled(window.scrollY > 20);
 
       // Lista de seções na ordem do layout (da primeira à última)
-      const sectionIds = ['home', 'sobre', 'servicos', 'projetos', 'insights'];
+      const sectionIds = ['home', 'sobre', 'servicos', 'projetos', 'insights', 'contato'];
       const offset = 150; // distância do topo para considerar a seção ativa
 
       // Encontra a primeira seção cujo topo está dentro do offset
@@ -124,7 +124,12 @@ export default function Header() {
             Insights
           </Link>
 
-          <Link href="#contato" className="text-xs font-medium tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
+          <Link 
+            href="#contato" 
+            onClick={(e) => handleScrollTo(e, 'contato')}
+            className={`text-xs font-medium tracking-widest uppercase transition-colors duration-300
+              ${activeSection === 'contato' ? 'text-[#9a1c24]' : 'text-gray-400 hover:text-white'}`}
+          >
             Contato
           </Link>
         </nav>

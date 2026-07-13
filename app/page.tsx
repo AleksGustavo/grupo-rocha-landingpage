@@ -29,15 +29,25 @@ export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Efeito para monitorar responsividade de forma segura no Client-Side
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+useEffect(() => {
+  const container = scrollContainerRef.current;
+  if (!container) return;
 
-    handleResize(); // Executa no mount inicial
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const autoScroll = setInterval(() => {
+    const isEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+    
+    if (isEnd) {
+      // Se chegou no fim, volta calmamente ao início
+      container.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      // Avança proporcionalmente ao tamanho visível da tela (funciona perfeitamente em mobile e desktop)
+      const scrollAmount = container.clientWidth * 0.8;
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  }, 5000); // 5000ms = 5 segundos de exibição por bloco
+
+  return () => clearInterval(autoScroll);
+}, []);
 
   // Efeito para alternar os cards a cada 8 segundos de forma automatizada (Aumentado conforme solicitado)
   useEffect(() => {
@@ -606,7 +616,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* BOTÃO CENTRALIZADO PARA VER TODAS AS OBRAS */}
+{/* BOTÃO CENTRALIZADO PARA VER TODAS AS OBRAS */}
           <div className="flex justify-center mt-4">
             <a 
               href="/portfolio" 
@@ -732,6 +742,276 @@ export default function Home() {
           }
         `}</style>
       </section>
+
+      {/* ==========================================
+          SEXTA DOBRA: CONTATO (TOTALMENTE RESPONSIVO)
+          ========================================== */}
+      <section id="contato" className="relative w-full bg-[#f9f6f0] py-20 md:py-28 px-4 sm:px-6 md:px-8 z-10 text-[#121417]">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+          
+          {/* COLUNA ESQUERDA: INFORMAÇÕES DE CONTATO (4/12) */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-10">
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] font-bold tracking-widest text-[#9a1c24] uppercase border-l-2 border-[#9a1c24] pl-3 mb-4">
+                Atendimento Exclusivo
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-light tracking-wide leading-tight text-[#121417] font-serif">
+                Inicie Seu <br />
+                <span className="font-semibold text-[#1a1d24]">Novo Projeto</span>
+              </h2>
+              <p className="mt-4 text-gray-600 text-xs sm:text-sm tracking-wide leading-relaxed max-w-md">
+                Seja para uma residência de alto padrão, um espaço corporativo ou uma consultoria técnica especializada, nossa equipe está pronta para materializar o seu legado.
+              </p>
+            </div>
+
+            {/* BLOCOS DE INFORMAÇÕES */}
+            <div className="flex flex-col gap-6 my-4">
+              {/* Telefone / WhatsApp */}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#121417] flex items-center justify-center text-white shrink-0 shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#c5a880]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold tracking-widest uppercase text-gray-400">Telefone & Whatsapp</h4>
+                  <p className="text-sm font-semibold text-[#121417] mt-0.5 hover:text-[#9a1c24] transition-colors">
+                    <a href="https://wa.me/5519999999999" target="_blank" rel="noopener noreferrer">+55 (19) 99999-9999</a>
+                  </p>
+                </div>
+              </div>
+
+              {/* E-mail */}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#121417] flex items-center justify-center text-white shrink-0 shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#c5a880]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold tracking-widest uppercase text-gray-400">E-mail Corporativo</h4>
+                  <p className="text-sm font-semibold text-[#121417] mt-0.5 hover:text-[#9a1c24] transition-colors">
+                    <a href="mailto:contato@rochaconcreto.com.br">contato@rochaconcreto.com.br</a>
+                  </p>
+                </div>
+              </div>
+
+              {/* Endereço Físico */}
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-[#121417] flex items-center justify-center text-white shrink-0 shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-[#c5a880]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-bold tracking-widest uppercase text-gray-400">Escritório Central</h4>
+                  <p className="text-sm font-semibold text-[#121417] mt-0.5 leading-relaxed">
+                    Av. 29 de Agosto, 1000 — Centro<br />
+                    Leme, SP — CEP 13610-210
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* HORÁRIO DE ATENDIMENTO */}
+            <div className="border-t border-black/5 pt-6 hidden lg:block">
+              <span className="text-[9px] font-bold tracking-widest uppercase text-gray-400">Horário de Funcionamento</span>
+              <p className="text-xs text-gray-600 mt-1">Segunda a Sexta: 08h às 18h &bull; Sábados: Com agendamento prévio</p>
+            </div>
+          </div>
+
+          {/* COLUNA DIREITA: FORMULÁRIO DE CONTATO (7/12) */}
+          <div className="lg:col-span-7 bg-white border border-black/5 rounded-2xl p-6 sm:p-10 shadow-xl">
+            <form onSubmit={(e) => { e.preventDefault(); alert("Mensagem enviada com sucesso! Nossa equipe entrará em contato em breve."); }} className="flex flex-col gap-6">
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Campo: Nome */}
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="nome" className="text-[10px] font-bold tracking-widest uppercase text-gray-500">Nome Completo *</label>
+                  <input 
+                    type="text" 
+                    id="nome" 
+                    required 
+                    placeholder="Ex: Aleksander Assis" 
+                    className="bg-neutral-50 border border-black/10 text-[#121417] placeholder:text-gray-400 text-xs sm:text-sm rounded-sm px-4 py-3.5 focus:outline-none focus:border-[#9a1c24] focus:ring-1 focus:ring-[#9a1c24] transition-all"
+                  />
+                </div>
+
+                {/* Campo: E-mail */}
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="email" className="text-[10px] font-bold tracking-widest uppercase text-gray-500">E-mail de Contato *</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    required 
+                    placeholder="Ex: seuemail@dominio.com" 
+                    className="bg-neutral-50 border border-black/10 text-[#121417] placeholder:text-gray-400 text-xs sm:text-sm rounded-sm px-4 py-3.5 focus:outline-none focus:border-[#9a1c24] focus:ring-1 focus:ring-[#9a1c24] transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Campo: Telefone */}
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="tel" className="text-[10px] font-bold tracking-widest uppercase text-gray-500">Telefone / WhatsApp</label>
+                  <input 
+                    type="tel" 
+                    id="tel" 
+                    placeholder="Ex: (19) 99999-9999" 
+                    className="bg-neutral-50 border border-black/10 text-[#121417] placeholder:text-gray-400 text-xs sm:text-sm rounded-sm px-4 py-3.5 focus:outline-none focus:border-[#9a1c24] focus:ring-1 focus:ring-[#9a1c24] transition-all"
+                  />
+                </div>
+
+                {/* Campo: Tipo de Serviço */}
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="servico" className="text-[10px] font-bold tracking-widest uppercase text-gray-500">Qual o foco do projeto? *</label>
+                  <select 
+                    id="servico" 
+                    required 
+                    className="bg-neutral-50 border border-black/10 text-[#121417] text-xs sm:text-sm rounded-sm px-4 py-3.5 focus:outline-none focus:border-[#9a1c24] focus:ring-1 focus:ring-[#9a1c24] transition-all cursor-pointer"
+                  >
+                    <option value="">Selecione o serviço...</option>
+                    <option value="arquitetura">Projeto Arquitetônico</option>
+                    <option value="residencial">Construção Residencial</option>
+                    <option value="corporativo">Projeto Corporativo/Comercial</option>
+                    <option value="interiores">Design de Interiores de Luxo</option>
+                    <option value="gestao">Gestão e Execução de Obras</option>
+                    <option value="consultoria">Consultorias e Laudos Técnicos</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Campo: Mensagem */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="mensagem" className="text-[10px] font-bold tracking-widest uppercase text-gray-500">Fale sobre suas expectativas *</label>
+                <textarea 
+                  id="mensagem" 
+                  rows={4} 
+                  required 
+                  placeholder="Conte um pouco sobre o tamanho da obra, localização e o que você idealiza..." 
+                  className="bg-neutral-50 border border-black/10 text-[#121417] placeholder:text-gray-400 text-xs sm:text-sm rounded-sm px-4 py-3.5 focus:outline-none focus:border-[#9a1c24] focus:ring-1 focus:ring-[#9a1c24] transition-all resize-none"
+                />
+              </div>
+
+              {/* Botão de Envio */}
+              <div className="mt-2">
+                <button 
+                  type="submit" 
+                  className="w-full text-[11px] font-semibold tracking-widest uppercase bg-[#9a1c24] hover:bg-[#80141a] text-white py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg shadow-[#9a1c24]/10 flex items-center justify-center gap-3 group"
+                >
+                  Enviar Mensagem e Iniciar Parceria
+                  <span className="transform group-hover:translate-x-1 transition-transform">&rarr;</span>
+                </button>
+              </div>
+
+              <span className="text-[10px] text-gray-400 text-center leading-relaxed block mt-2">
+                * Respeitamos sua privacidade. Seus dados estão seguros e serão utilizados unicamente para retornarmos seu contato comercial.
+              </span>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ==========================================
+          FOOTER (RODAPÉ CORPORATIVO)
+          ========================================== */}
+      <footer className="relative w-full bg-[#121417] text-white border-t border-white/5 pt-16 pb-8 px-6 z-30">
+        <div className="max-w-7xl mx-auto flex flex-col gap-12">
+          
+          {/* GRID PRINCIPAL */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
+            
+            {/* Bloco 1: Logo e Descrição (5/12) */}
+            <div className="md:col-span-5 flex flex-col items-start gap-4">
+              <div className="flex items-center gap-2">
+                {/* Logo ícone estilizado */}
+                <div className="w-8 h-8 bg-[#9a1c24] flex items-center justify-center font-serif text-white font-bold text-lg rounded-sm">
+                  R
+                </div>
+                <span className="font-serif tracking-widest text-sm font-semibold uppercase">
+                  Rocha <span className="text-gray-400">&</span> Concreto
+                </span>
+              </div>
+              <p className="text-gray-400 text-xs tracking-wide leading-relaxed max-w-sm mt-1">
+                Uma assinatura técnica de destaque nacional. Desenvolvemos soluções sofisticadas com perfeccionismo de engenharia e beleza arquitetônica atemporal.
+              </p>
+              
+              {/* Redes Sociais */}
+              <div className="flex items-center gap-4 mt-2">
+                {/* Instagram */}
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#c5a880] hover:border-[#c5a880] transition-all duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                </a>
+                {/* LinkedIn */}
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#c5a880] hover:border-[#c5a880] transition-all duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" />
+                  </svg>
+                </a>
+                {/* YouTube */}
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#c5a880] hover:border-[#c5a880] transition-all duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" /><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Bloco 2: Links Institucionais (3/12) */}
+            <div className="md:col-span-3 flex flex-col gap-4">
+              <h3 className="text-[10px] font-bold tracking-widest uppercase text-white border-l border-[#9a1c24] pl-2.5">
+                Navegação
+              </h3>
+              <ul className="space-y-2.5 text-xs text-gray-400">
+                <li><a href="#home" className="hover:text-white transition-colors duration-200">Início</a></li>
+                <li><a href="#sobre" className="hover:text-white transition-colors duration-200">Quem Somos</a></li>
+                <li><a href="#servicos" className="hover:text-white transition-colors duration-200">Serviços Oferecidos</a></li>
+                <li><a href="#projetos" className="hover:text-white transition-colors duration-200">Portfólio de Obras</a></li>
+                <li><a href="#insights" className="hover:text-white transition-colors duration-200">Insights & Blog</a></li>
+              </ul>
+            </div>
+
+            {/* Bloco 3: Contatos Rápidos (4/12) */}
+            <div className="md:col-span-4 flex flex-col gap-4">
+              <h3 className="text-[10px] font-bold tracking-widest uppercase text-white border-l border-[#9a1c24] pl-2.5">
+                Atendimento Direct
+              </h3>
+              <ul className="space-y-3 text-xs text-gray-400">
+                <li className="flex items-center gap-2">
+                  <span className="text-[#c5a880] font-bold">•</span>
+                  <span>+55 (19) 99999-9999</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="text-[#c5a880] font-bold">•</span>
+                  <span>contato@rochaconcreto.com.br</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#c5a880] font-bold mt-0.5">•</span>
+                  <span className="leading-relaxed">Av. 29 de Agosto, 1000 — Centro, Leme - SP</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+          {/* DIVISOR DA LINHA DE CRÉDITOS */}
+          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-gray-500 tracking-wide">
+            <div>
+              &copy; {new Date().getFullYear()} Rocha e Concreto Construtora. Todos os direitos reservados.
+            </div>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white transition-colors">Políticas de Privacidade</a>
+              <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
+            </div>
+          </div>
+
+        </div>
+      </footer>
     </div>
   );
 }
