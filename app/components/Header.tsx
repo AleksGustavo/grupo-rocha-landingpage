@@ -68,7 +68,8 @@ export default function Header() {
         <Link href="/" onClick={(e) => handleScrollTo(e, 'home')} className="flex items-center gap-3">
           <Image 
             src="/logo.png" 
-            alt="Grupo Rocha Construtoras" 
+            alt="Grupo Rocha Construtoras"
+            sizes="(max-width: 768px) 100vw, 58vw"
             width={160} 
             height={50} 
             className="object-contain"
