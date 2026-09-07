@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Grupo Rocha — Landing Page
 
-## Getting Started
+Landing page institucional de página única do **Grupo Rocha Construtoras**
+(arquitetura e construção de alto padrão). Rolagem vertical com as seções
+Home, Sobre, Serviços, Projetos, Insights e Contato.
 
-First, run the development server:
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack)
+- React 19 + TypeScript
+- Tailwind CSS v4
+- [Resend](https://resend.com) para o envio do formulário de contato
+
+> ⚠️ Esta versão do Next.js tem breaking changes em relação a versões
+> anteriores. Consulte os guias em `node_modules/next/dist/docs/` antes de
+> escrever código.
+
+## Como rodar
+
+Requer **Node.js ≥ 20.9** (ver `.nvmrc`).
 
 ```bash
+npm install
+cp .env.example .env.local   # preencha as chaves do Resend
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra <http://localhost:3000>.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script              | Descrição                   |
+| ------------------- | --------------------------- |
+| `npm run dev`       | Servidor de desenvolvimento |
+| `npm run build`     | Build de produção           |
+| `npm run start`     | Serve o build               |
+| `npm run lint`      | ESLint                      |
+| `npm run typecheck` | `tsc --noEmit`              |
+| `npm run format`    | Prettier (escrita)          |
 
-## Learn More
+## Estrutura
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  layout.tsx              # <html>, metadata, Header, skip-link
+  page.tsx                # compõe as seções (Server Component)
+  error.tsx / not-found.tsx
+  robots.ts / sitemap.ts
+  globals.css
+  components/
+    Header.tsx            # header fixo + scroll-spy + menu mobile (client)
+    sections/             # uma seção por arquivo
+content/                  # dados da página (fonte única de verdade)
+  empresa.ts              # NAP, marca, redes — PREENCHER com dados reais
+  servicos.ts projetos.ts equipe.ts artigos.ts navegacao.ts
+lib/
+  actions.ts             # Server Action do formulário de contato
+  hooks.ts               # useMediaQuery / useIsMobile / usePrefersReducedMotion
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Formulário de contato
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O envio usa uma **Server Action** (`lib/actions.ts`) + Resend. Variáveis em
+`.env.example`:
 
-## Deploy on Vercel
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL` — remetente verificado no Resend
+- `CONTACT_TO_EMAIL` — destino (padrão: `content/empresa.ts`)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Sem essas variáveis o formulário valida os campos mas informa que o envio não
+está configurado.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Pendências conhecidas
+
+- `content/empresa.ts` contém **dados provisórios** (telefone, e-mail,
+  endereço, redes sociais, domínio) — confirmar com o cliente antes de publicar.
+- Projetos e artigos usam imagens/placeholder; substituir por conteúdo real.
+- Não há página `/portfolio` — o CTA aponta para a seção de contato.
+- `font-serif` usa a fonte serifada padrão do navegador; avaliar `next/font`.
+
+## Deploy
+
+Otimizado para [Vercel](https://vercel.com). Configure as variáveis de
+ambiente do formulário no painel do projeto.
