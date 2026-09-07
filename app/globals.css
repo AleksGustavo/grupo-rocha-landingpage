@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  /* Definição das novas cores do projeto */
-  --bg-dark: #121417;        /* Cinza grafite muito escuro (fundo principal) */
-  --bg-card: #1a1d24;        /* Cinza ligeiramente mais claro para blocos/cards */
-  --accent-red: #9a1c24;     /* Vermelho-escuro sofisticado (Bordô/Carmim) */
-  --text-muted: #9ca3af;     /* Cinza médio para textos secundários */
+  /* Paleta do projeto */
+  --bg-dark: #121417; /* Cinza grafite muito escuro (fundo principal) */
+  --bg-card: #1a1d24; /* Cinza ligeiramente mais claro para blocos/cards */
+  --accent-red: #9a1c24; /* Vermelho-escuro sofisticado (Bordô/Carmim) */
+  --accent-gold: #c5a880; /* Dourado de apoio */
+  --text-muted: #9ca3af; /* Cinza médio para textos secundários */
 }
 
 body {
   background-color: var(--bg-dark);
   color: #ffffff;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Ocultar barra de rolagem (Utilitário global) */
+/* Ocultar barra de rolagem (utilitário global) */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
 .no-scrollbar {
   -ms-overflow-style: none; /* IE e Edge */
-  scrollbar-width: none;    /* Firefox */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Respeita a preferência do sistema por menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
